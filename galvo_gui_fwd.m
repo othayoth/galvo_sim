@@ -7,19 +7,21 @@ function galvo_gui
     %% setup geometry
     
     mirror(1).angle  = -10;  % tilt (degree)
-    mirror(2).angle  =  10;  % pan  (degree)
+    mirror(2).angle  =  7.018;  % pan  (degree)
     
     % orientation, position, field of view (fov needs more work)
     cam.R = eulerzyx_fast([pi, 0, 0]);
     cam.p = [0 0 0];
-    cam.view_angle = 1.5*pi/180; % set this to zero to see projection of point instead of square fov
+    cam.view_angle = 00*pi/180; % set this to zero to see projection of point instead of square fov
     
     
     % mirror 1 -- tilt mirror position and orientation
     mirror(1).p = cam.p'  + cam.R(:,3)*10; % can add some offset along x and y and would still work
     mirror(1).R = eulerzyx_fast([0,0,180]*pi/180)*eulerzyx_fast([-45,0,0]*pi/180)*eulerzyx_fast([ mirror(1).angle 0 0]*pi/180);
     % mirror 2 -- pan mirror position and orientation
-    mirror(2).p = mirror(1).p + cam.R(:,2)*7.25; % again, can add some offset and would still work 
+    mirror(2).p = mirror(1).p + cam.R(:,2)*10; % again, can add some offset and would still work 
+    % the below one is temp; above one is accurate
+    mirror(2).p = mirror(1).p + cam.R(:,2)*10; % again, can add some offset and would still work 
     mirror(2).R = eulerzyx_fast([0,-90,0]*pi/180)*eulerzyx_fast([-45,0,0]*pi/180)*eulerzyx_fast( [mirror(2).angle 0 0]*pi/180);
 
 
