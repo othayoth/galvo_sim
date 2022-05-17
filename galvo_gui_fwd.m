@@ -17,12 +17,12 @@ function galvo_gui
     
     % mirror 1 -- tilt mirror position and orientation
     mirror(1).p = cam.p'  + cam.R(:,3)*10; % can add some offset along x and y and would still work
-    mirror(1).R = eulerzyx_fast([0,0,180]*pi/180)*eulerzyx_fast([-45,0,0]*pi/180)*eulerzyx_fast([ mirror(1).angle 0 0]*pi/180);
+    mirror(1).R = eulerzyx_fast([0,0,180]*pi/180)*eulerzyx_fast([0,0,0]*pi/180)*eulerzyx_fast([ mirror(1).angle 0 0]*pi/180);
     % mirror 2 -- pan mirror position and orientation
     mirror(2).p = mirror(1).p + cam.R(:,2)*10; % again, can add some offset and would still work 
     % the below one is temp; above one is accurate
     mirror(2).p = mirror(1).p + cam.R(:,2)*10; % again, can add some offset and would still work 
-    mirror(2).R = eulerzyx_fast([0,-90,0]*pi/180)*eulerzyx_fast([-45,0,0]*pi/180)*eulerzyx_fast( [mirror(2).angle 0 0]*pi/180);
+    mirror(2).R = eulerzyx_fast([180,90,-90]*pi/180)*eulerzyx_fast([0,0,0]*pi/180)*eulerzyx_fast( [mirror(2).angle 0 0]*pi/180);
 
 
     %% setup figures
@@ -67,14 +67,14 @@ function galvo_gui
 
     % slider for tilt angle
     ff.sl.t = uicontrol('style','slider','units','pixel','string','tilt','tag','tag_sl_tilt'); 
-    ff.sl.t.Max = max(-5);
-    ff.sl.t.Min = min(-15);
+    ff.sl.t.Max = max(-45);
+    ff.sl.t.Min = min(-60);
     addlistener(ff.sl.t,'ContinuousValueChange',@(hObject, event) update_system(hObject, event,ff,cam,mirror));
 
     % slider for pan angle
     ff.sl.p = uicontrol('style','slider','units','pixel','string','pan','tag','tag_sl_pan'); 
-    ff.sl.p.Max = max(10);
-    ff.sl.p.Min = min(-10);
+    ff.sl.p.Max = max(-20);
+    ff.sl.p.Min = min(-80);
     addlistener(ff.sl.p,'ContinuousValueChange',@(hObject, event) update_system(hObject, event,ff,cam,mirror));
        
     % reset button
@@ -98,12 +98,12 @@ function reset_system(ff,cam,mirror)
     subplot(ff.sp)
 
     % reset the angles
-    mirror(1).angle  = -10; % tilt
-    mirror(2).angle  =  10; % pan
+    mirror(1).angle  = -55; % tilt
+    mirror(2).angle  =  -45; % pan
 
     % reset mirror orientations
-    mirror(1).R = eulerzyx_fast([0,0,180]*pi/180)*eulerzyx_fast([-45,0,0]*pi/180)*eulerzyx_fast([ mirror(1).angle 0 0]*pi/180);
-    mirror(2).R = eulerzyx_fast([0,-90,0]*pi/180)*eulerzyx_fast([-45,0,0]*pi/180)*eulerzyx_fast( [mirror(2).angle 0 0]*pi/180);
+    mirror(1).R = eulerzyx_fast([0,  0,180]*pi/180)*eulerzyx_fast([0,0,0]*pi/180)*eulerzyx_fast([ mirror(1).angle 0 0]*pi/180);
+    mirror(2).R = eulerzyx_fast([180,90,  -90]*pi/180)*eulerzyx_fast([0,0,0]*pi/180)*eulerzyx_fast( [mirror(2).angle 0 0]*pi/180);
 
     % update mirror patches
     ff.mirror(1).Vertices =(mirror(1).R*mirror(1).vertices + mirror(1).p)';
@@ -154,8 +154,8 @@ function update_system(hObject, event,ff,cam,mirror)
     mirror(2).angle = hh.Value;
 
     % update mirror rotations
-    mirror(1).R = eulerzyx_fast([0,0,180]*pi/180)*eulerzyx_fast([-45,0,0]*pi/180)*eulerzyx_fast([ mirror(1).angle 0 0]*pi/180);
-    mirror(2).R = eulerzyx_fast([0,-90,0]*pi/180)*eulerzyx_fast([-45,0,0]*pi/180)*eulerzyx_fast( [mirror(2).angle 0 0]*pi/180);
+    mirror(1).R = eulerzyx_fast([0,0,180]*pi/180)*eulerzyx_fast([-0,0,0]*pi/180)*eulerzyx_fast([ mirror(1).angle 0 0]*pi/180);
+    mirror(2).R = eulerzyx_fast([180,90,-90]*pi/180)*eulerzyx_fast([-0,0,0]*pi/180)*eulerzyx_fast( [mirror(2).angle 0 0]*pi/180);
     
     % update mirror plot patches
     ff.mirror(1).Vertices =(mirror(1).R*mirror(1).vertices + mirror(1).p)';
