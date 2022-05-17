@@ -1,4 +1,5 @@
 
+    
 
     % input
     p_target = [-37.0752;-23.4943;-28];
@@ -18,12 +19,15 @@
     cam.p = [0 0 0];
     cam.view_angle = 00*pi/180; % set this to zero to see projection of point instead of square fov
     
-    
+    mirror(1).offset = 21.4633; % vertical offset (cm)
+    mirror(2).offset = 13.5;    % horizontal offset (cm)
+
+
     % mirror 1 -- tilt mirror position and orientation
-    mirror(1).p = cam.p' + cam.R(:,3)*10; % can add some offset along x and y and would still work
+    mirror(1).p = cam.p' + cam.R(:,3)* mirror(1).offset; % can add some offset along x and y and would still work
     mirror(1).R = eulerzyx_fast([0,0,180]*pi/180)*eulerzyx_fast([0,0,0]*pi/180)*eulerzyx_fast([ mirror(1).angle 0 0]*pi/180);
     % mirror 2 -- pan mirror position and orientation
-    mirror(2).p = mirror(1).p + cam.R(:,2)*10; % again, can add some offset and would still work 
+    mirror(2).p = mirror(1).p + cam.R(:,2)*mirror(2).offset; % again, can add some offset and would still work 
     mirror(2).R = eulerzyx_fast([180,90,-90]*pi/180)*eulerzyx_fast([0,0,0]*pi/180)*eulerzyx_fast( [mirror(2).angle 0 0]*pi/180);
 
     %% 0 . Solve for pan angle
